@@ -1,4 +1,5 @@
 <template>
+  <form action="" @submit="submitForm">
     <div>
       <div class="row">
         <p v-if="editing_mode">Edit clicked Member</p>
@@ -18,16 +19,17 @@
         </div>
       </div>
       <div class="d-grid gap-2 mt-4">
-        <button class="btn btn-primary" :class="editing_mode ? 'btn-warning' : 'btn-primary'" @click="submitForm" type="button">
+        <button class="btn btn-primary" :class="editing_mode ? 'btn-warning' : 'btn-primary'" type="submit">
           {{ editing_mode ? 'Update' : 'Add Member' }}
         </button>
         <button v-if="editing_mode" class="btn btn-dark mt-2" @click="discardEdit">Cancel</button>
       </div>
     </div>
+  </form>
   </template>
   
   <script setup>
-  import { ref } from 'vue';
+  import { ref, defineEmits } from 'vue';
   
   const emit = defineEmits(['addMember', 'updateMember']);
   
@@ -38,7 +40,9 @@
   let editing_mode = ref(false);
   let selectedMember = ref(null);
   
-  function submitForm() {
+  function submitForm(e) {
+
+    e.preventDefault()
     if (!username.value || !contact.value || !department.value || !email.value) {
       return alert('Please fill out all fields');
     }
